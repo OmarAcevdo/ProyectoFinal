@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
  */
-package misFormularios;
+package vistas;
 
 import controladores.conexionBD;
 import java.sql.ResultSet;
@@ -51,19 +51,19 @@ public class ProveedorMantenedor extends javax.swing.JInternalFrame {
     
     void Llenar() {
         try {
-            String[] titulos = {"ID_Proveedor","RUC", "Direccion", "Correo", "Telefono","Nombre"};
+            String[] titulos = {"idProveedor","Ruc", "Razon Social", "Dirección", "Telefono","Correo"};
             model = new DefaultTableModel(null, titulos);
             ResultSet rs = null;
             conexionBD valor = new conexionBD();
             rs = valor.getConexion().executeQuery("select * from proveedor");
             String fila[] = new String[6];
             while (rs.next()) {
-                fila[0] = rs.getString("id_proveedor");
+                fila[0] = rs.getString("idProveedor");
                 fila[1] = rs.getString("ruc");
-                fila[2] = rs.getString("direccion");
-                fila[3] = rs.getString("correo");
+                fila[2] = rs.getString("nomProveedor");
+                fila[3] = rs.getString("direccion");
                 fila[4] = rs.getString("telefono");
-                fila[5] = rs.getString("nombre");
+                fila[5] = rs.getString("correo");
                 model.addRow(fila);
             }
             jtListado.setModel(model);
@@ -100,6 +100,7 @@ public class ProveedorMantenedor extends javax.swing.JInternalFrame {
         setClosable(true);
         setIconifiable(true);
         setMaximizable(true);
+        setTitle("Proveedor");
 
         btnNuevo.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         btnNuevo.setText("Nuevo");
@@ -305,7 +306,7 @@ public class ProveedorMantenedor extends javax.swing.JInternalFrame {
         String nomb = txtNombre.getText();
 
         String consulta;
-        consulta = "INSERT INTO proveedor VALUES( id_proveedor , '"
+        consulta = "INSERT INTO proveedor VALUES( idProveedor , '"
                 + ruc + "','" + nomb + "','" + direc + "','" + tel + "','" + corr + "' )";
         try {
             conexionBD valor = new conexionBD();
@@ -324,7 +325,7 @@ public class ProveedorMantenedor extends javax.swing.JInternalFrame {
         try {
             int fila = jtListado.getSelectedRow();
             conexionBD valor = new conexionBD();
-            valor.getConexion().executeUpdate("delete from proveedor where id_proveedor =" + "'"+jtListado.getValueAt(fila,0)+"'");
+            valor.getConexion().executeUpdate("delete from proveedor where idProveedor =" + "'"+jtListado.getValueAt(fila,0)+"'");
             JOptionPane.showMessageDialog(null, "datos eliminados");
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "error" + e.getMessage());
@@ -336,10 +337,10 @@ public class ProveedorMantenedor extends javax.swing.JInternalFrame {
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
         try {
             conexionBD valor = new conexionBD();
-            valor.getConexion().executeUpdate("Update proveedor set id_proveedor=" + "'" + txtId_Proveedor.getText() + "'"
-                    + ", ruc=" + "'" + txtRuc.getText() + "'" + " , direccion=" + "'" + txtDireccion.getText() 
-                    + "', correo='" + txtCorreo.getText() +"', telefono='" + txtTelefono.getText() +"', nombre='" 
-                    + txtNombre.getText() +"' where id_proveedor=" + "'" + txtId_Proveedor.getText() + "'");
+            valor.getConexion().executeUpdate("Update proveedor set idProveedor=" + "'" + txtId_Proveedor.getText() + "'"
+                    + ", ruc=" + "'" + txtRuc.getText() + "'" + " , nomProveedor=" + "'" + txtNombre.getText() 
+                    + "', direccion='" + txtDireccion.getText() +"', telefono='" + txtTelefono.getText() +"', correo='" 
+                    + txtCorreo.getText() +"' where idProveedor=" + "'" + txtId_Proveedor.getText() + "'");
             JOptionPane.showMessageDialog(null, "datos actualizados");
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "error" + e.getMessage());
@@ -355,14 +356,14 @@ public class ProveedorMantenedor extends javax.swing.JInternalFrame {
                 int fila = jtListado.getSelectedRow();
                 ResultSet rs = null;
                 conexionBD valor = new conexionBD();
-                rs = valor.getConexion().executeQuery("select * from proveedor where id_proveedor=" + jtListado.getValueAt(fila, 0));
+                rs = valor.getConexion().executeQuery("select * from proveedor where idProveedor=" + jtListado.getValueAt(fila, 0));
                 rs.next();
-                txtId_Proveedor.setText(rs.getString("id_proveedor"));
+                txtId_Proveedor.setText(rs.getString("idProveedor"));
                 txtRuc.setText(rs.getString("ruc"));
+                txtNombre.setText(rs.getString("nomProveedor"));
                 txtDireccion.setText(rs.getString("direccion"));
-                txtCorreo.setText(rs.getString("correo"));
                 txtTelefono.setText(rs.getString("telefono"));
-                txtNombre.setText(rs.getString("nombre"));               
+                txtCorreo.setText(rs.getString("correo"));               
                 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -385,16 +386,27 @@ public class ProveedorMantenedor extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void txtRucKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtRucKeyTyped
-        char c = evt.getKeyChar();
-        if (Character.isLetter(c)) {
+        char key = evt.getKeyChar();
+        boolean numeros = key >= 48 && key <= 57 || key == 8;
+        if (!numeros) {
             getToolkit().beep();
             evt.consume();
         }
+        if (txtRuc.getText().trim().length() == 11) {
+            getToolkit().beep();
+            evt.consume();
+        }
+    
     }//GEN-LAST:event_txtRucKeyTyped
 
     private void txtTelefonoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTelefonoKeyTyped
-        char c = evt.getKeyChar();
-        if (Character.isLetter(c)) {
+        char key = evt.getKeyChar();
+        boolean numeros = key >= 48 && key <= 57 || key == 8;
+        if (!numeros) {
+            getToolkit().beep();
+            evt.consume();
+        }
+        if (txtTelefono.getText().trim().length() == 9) {
             getToolkit().beep();
             evt.consume();
         }

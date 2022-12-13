@@ -12,7 +12,7 @@ public class conexionBD {
     public conexionBD() throws SQLException {
         String user = "root";
         String pass = "316497069";
-        String url = "jdbc:mysql://localhost/tiendatambo";
+        String url = "jdbc:mysql://localhost:3306/tiendatambo";
         try {
             Class.forName("com.mysql.jdbc.Driver").newInstance();
             con = DriverManager.getConnection(url, user, pass);

@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
  */
-package misFormularios;
+package vistas;
 
 import controladores.conexionBD;
 import java.sql.ResultSet;
@@ -36,15 +36,15 @@ public class CategoriaMantenedor extends javax.swing.JInternalFrame {
     }
     void Llenar(){
         try {
-            String[] titulos = {"DNI", "Nombre"};
+            String[] titulos = {"Id", "Nombre Categoria"};
             model = new DefaultTableModel(null, titulos);
             ResultSet rs = null;
             conexionBD valor = new conexionBD();
             rs = valor.getConexion().executeQuery("select * from categoria");
             String fila[] = new String[2];
             while (rs.next()) {
-                fila[0] = rs.getString("idcategoria");
-                fila[1] = rs.getString("nombre");
+                fila[0] = rs.getString("idCategoria");
+                fila[1] = rs.getString("nomCategoria");
                 model.addRow(fila);
             }
             jtListado.setModel(model);
@@ -73,6 +73,7 @@ public class CategoriaMantenedor extends javax.swing.JInternalFrame {
         setClosable(true);
         setIconifiable(true);
         setMaximizable(true);
+        setTitle("Categoria");
 
         btnNuevo.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         btnNuevo.setText("Nuevo");
@@ -124,6 +125,12 @@ public class CategoriaMantenedor extends javax.swing.JInternalFrame {
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel1.setText("ID:");
+
+        txtID.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtIDActionPerformed(evt);
+            }
+        });
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel2.setText("Nombre:");
@@ -218,7 +225,7 @@ public class CategoriaMantenedor extends javax.swing.JInternalFrame {
         String nombre = txtNombre.getText();
 
         String consulta;
-        consulta = "INSERT INTO categoria VALUES( idcategoria,'"
+        consulta = "INSERT INTO categoria VALUES( idCategoria,'"
                 + nombre + "')";
         try {
             conexionBD valor = new conexionBD();
@@ -241,10 +248,10 @@ public class CategoriaMantenedor extends javax.swing.JInternalFrame {
                 int fila = jtListado.getSelectedRow();
                 ResultSet rs = null;
                 conexionBD valor = new conexionBD();
-                rs = valor.getConexion().executeQuery("select * from categoria where idcategoria=" + jtListado.getValueAt(fila, 0));
+                rs = valor.getConexion().executeQuery("select * from categoria where idCategoria=" + jtListado.getValueAt(fila, 0));
                 rs.next();
-                txtID.setText(rs.getString("idcategoria"));
-                txtNombre.setText(rs.getString("nombre"));
+                txtID.setText(rs.getString("idCategoria"));
+                txtNombre.setText(rs.getString("nomCategoria"));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -258,8 +265,8 @@ public class CategoriaMantenedor extends javax.swing.JInternalFrame {
         try {
             conexionBD valor = new conexionBD();
             
-            valor.getConexion().executeUpdate("Update categoria set idcategoria=" + "'" + txtID.getText() + "'"
-                    + ", nombre=" + "'" + txtNombre.getText() + "'" + "  where idcategoria=" + "'" + txtID.getText() + "'");
+            valor.getConexion().executeUpdate("Update categoria set idCategoria=" + "'" + txtID.getText() + "'"
+                    + ", nomCategoria=" + "'" + txtNombre.getText() + "'" + "  where idCategoria=" + "'" + txtID.getText() + "'");
             JOptionPane.showMessageDialog(null, "datos actualizados");
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "error" + e.getMessage());
@@ -279,7 +286,7 @@ public class CategoriaMantenedor extends javax.swing.JInternalFrame {
         try {
             int fila = jtListado.getSelectedRow();
             conexionBD valor = new conexionBD();
-            valor.getConexion().executeUpdate("delete from categoria where idcategoria =" + "'"+jtListado.getValueAt(fila,0)+"'");
+            valor.getConexion().executeUpdate("delete from categoria where idCategoria =" + "'"+jtListado.getValueAt(fila,0)+"'");
             JOptionPane.showMessageDialog(null, "datos eliminados");
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "error" + e.getMessage());
@@ -300,6 +307,10 @@ public class CategoriaMantenedor extends javax.swing.JInternalFrame {
         txtID.requestFocus();
         // TODO add your handling code here:
     }//GEN-LAST:event_btnNuevoActionPerformed
+
+    private void txtIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIDActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtIDActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

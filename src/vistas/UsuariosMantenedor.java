@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
  */
-package misFormularios;
+package vistas;
     
 import controladores.conexionBD;
 import java.sql.ResultSet;
@@ -29,44 +29,40 @@ public class UsuariosMantenedor extends javax.swing.JInternalFrame {
 
     void Deshabilitar(){
     txtID.setEditable(false);
-    txtNombre.setEditable(false);
-    txtApellido.setEditable(false);
     txtCorreo.setEditable(false);
     txtUsuario.setEditable(false);
     txtContraseña.setEditable(false);
+    txtDni.setEditable(false);
 }
     
     void Limpiar() {
-        txtNombre.setEditable(true);
-        txtApellido.setEditable(true);
         txtCorreo.setEditable(true);
         txtUsuario.setEditable(true);
         txtContraseña.setEditable(true);
+        txtDni.setEditable(true);
         txtID.setText("");
-        txtNombre.setText("");
-        txtApellido.setText("");
         txtCorreo.setText("");
         txtUsuario.setText("");
         txtContraseña.setText("");
+        txtDni.setText("");
     }
     
     
     void Llenar(){
             try {
-            String[] titulo = {"ID", "Nombres", "Apellidos", "Correo", "Usuario", "Contraseña", "ID Rol"};
+            String[] titulo = {"ID_Usuario", "Correo", "Usuario", "Contraseña", "ID_Rol", "DNI"};
             model = new DefaultTableModel(null, titulo);
             ResultSet rs = null;
             conexionBD valor = new conexionBD();
-            rs = valor.getConexion().executeQuery("select * from usuarios");
-            String fila[] = new String[7];
+            rs = valor.getConexion().executeQuery("select * from usuario");
+            String fila[] = new String[6];
             while (rs.next()) {
-                fila[0] = rs.getString("idusuarios");
-                fila[1] = rs.getString("nombre");
-                fila[2] = rs.getString("apellido");
-                fila[3] = rs.getString("correo");
-                fila[4] = rs.getString("usuario");
-                fila[5] = rs.getString("contraseña");
-                fila[6] = rs.getString("rol_id_rol");
+                fila[0] = rs.getString("idUsuario");
+                fila[1] = rs.getString("correo");
+                fila[2] = rs.getString("usuario");
+                fila[3] = rs.getString("contraseña");
+                fila[4] = rs.getString("idRol");
+                fila[5] = rs.getString("dniPersona");
                 model.addRow(fila);
             }
             jtListado.setModel(model);
@@ -84,8 +80,8 @@ public class UsuariosMantenedor extends javax.swing.JInternalFrame {
             rs = valor.getConexion().executeQuery("select * from rol");
             String fila[] = new String[2];
             while (rs.next()) {
-                fila[0] = rs.getString("id_rol");
-                fila[1] = rs.getString("nombre");
+                fila[0] = rs.getString("idRol");
+                fila[1] = rs.getString("nomRol");
                 model.addRow(fila);
             }
             jtListadoRol.setModel(model);
@@ -115,21 +111,20 @@ public class UsuariosMantenedor extends javax.swing.JInternalFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         txtID = new javax.swing.JTextField();
-        txtNombre = new javax.swing.JTextField();
-        txtApellido = new javax.swing.JTextField();
         txtCorreo = new javax.swing.JTextField();
         txtUsuario = new javax.swing.JTextField();
         txtContraseña = new javax.swing.JTextField();
+        txtDni = new javax.swing.JTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
         jtListadoRol = new javax.swing.JTable();
 
         setClosable(true);
         setIconifiable(true);
         setMaximizable(true);
+        setTitle("Usuarios");
 
         btnNuevo.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         btnNuevo.setText("Nuevo");
@@ -176,11 +171,11 @@ public class UsuariosMantenedor extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "ID", "Nombres", "Apellidos", "Correo", "Usuario", "Contraseña", "ID Rol"
+                "ID_Usuario", "Correo", "Usuario", "Contraseña", "ID_Rol", "DNI"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.String.class, java.lang.String.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -198,26 +193,29 @@ public class UsuariosMantenedor extends javax.swing.JInternalFrame {
         jLabel1.setText("ID:");
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel2.setText("Nombres:");
+        jLabel2.setText("Correo:");
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel3.setText("Apellidos:");
+        jLabel3.setText("Usuario:");
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel4.setText("Correo:");
-
-        jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel5.setText("Usuario:");
+        jLabel4.setText("Contraseña:");
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel6.setText("Contraseña:");
+        jLabel6.setText("DNI");
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel7.setText("Rol:");
 
-        txtNombre.addActionListener(new java.awt.event.ActionListener() {
+        txtCorreo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtNombreActionPerformed(evt);
+                txtCorreoActionPerformed(evt);
+            }
+        });
+
+        txtDni.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtDniKeyTyped(evt);
             }
         });
 
@@ -262,34 +260,31 @@ public class UsuariosMantenedor extends javax.swing.JInternalFrame {
                         .addGap(18, 18, 18)
                         .addComponent(btnActualizar))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel2)
+                                        .addComponent(jLabel3)
+                                        .addComponent(jLabel4)
+                                        .addComponent(jLabel1))
+                                    .addGap(33, 33, 33))
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                    .addComponent(jLabel7)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel6)
-                                .addGap(18, 18, 18)
-                                .addComponent(txtContraseña))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel2)
-                                            .addComponent(jLabel3)
-                                            .addComponent(jLabel4)
-                                            .addComponent(jLabel5)
-                                            .addComponent(jLabel1))
-                                        .addGap(33, 33, 33))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                        .addComponent(jLabel7)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(txtID)
-                                    .addComponent(txtNombre)
-                                    .addComponent(txtApellido)
-                                    .addComponent(txtCorreo)
-                                    .addComponent(txtUsuario)
-                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addGap(98, 98, 98)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtDni, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE)
+                            .addComponent(txtID)
+                            .addComponent(txtCorreo)
+                            .addComponent(txtUsuario)
+                            .addComponent(txtContraseña)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 486, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(31, Short.MAX_VALUE))
+                .addContainerGap(16, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -301,7 +296,7 @@ public class UsuariosMantenedor extends javax.swing.JInternalFrame {
                     .addComponent(btnEliminar)
                     .addComponent(btnGuardar)
                     .addComponent(btnActualizar))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(47, 47, 47)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -309,45 +304,39 @@ public class UsuariosMantenedor extends javax.swing.JInternalFrame {
                             .addComponent(jLabel1))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel2))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel3))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtContraseña, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel4))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel5))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtContraseña, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel6))
+                            .addComponent(jLabel6)
+                            .addComponent(txtDni, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(29, Short.MAX_VALUE))
+                                .addGap(18, 18, 18)
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(47, 47, 47)
-                                .addComponent(jLabel7)
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 401, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(29, 29, 29))))
+                                .addGap(55, 55, 55)
+                                .addComponent(jLabel7))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 355, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreActionPerformed
+    private void txtCorreoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCorreoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtNombreActionPerformed
+    }//GEN-LAST:event_txtCorreoActionPerformed
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         Limpiar();
@@ -355,11 +344,10 @@ public class UsuariosMantenedor extends javax.swing.JInternalFrame {
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
     
-        String nombre = txtNombre.getText();
-        String apellido = txtApellido.getText();
         String correo = txtCorreo.getText();
         String usuario = txtUsuario.getText();
-        String contraseña = txtContraseña.getText();  
+        String contraseña = txtContraseña.getText();
+        String Dni = txtDni.getText();  
         
         int fila = jtListadoRol.getSelectedRow();
         String rol = (String) jtListadoRol.getValueAt(fila,0);
@@ -367,8 +355,8 @@ public class UsuariosMantenedor extends javax.swing.JInternalFrame {
 
         
         String consulta;
-        consulta = "INSERT INTO usuarios VALUES(idusuarios, '"
-                + nombre + "','" + apellido + "','" + correo + "','" + usuario + "','" + contraseña + "','"+rol+"')";
+        consulta = "INSERT INTO usuario VALUES(idUsuario, '"
+                + correo + "','" + usuario + "','" + contraseña + "','" + rol + "','" + Dni+"')";
         try {
             conexionBD valor = new conexionBD();
             valor.getConexion().executeUpdate(consulta);
@@ -387,8 +375,8 @@ public class UsuariosMantenedor extends javax.swing.JInternalFrame {
             String rol = (String) jtListadoRol.getValueAt(fila,0);
             
             conexionBD valor = new conexionBD();
-            valor.getConexion().executeUpdate("Update usuarios set idusuarios=" + "'" + txtID.getText() + "'"
-                    + ", nombre=" + "'" + txtNombre.getText() + "'" + " , apellido=" + "'" + txtApellido.getText() + "', correo='" + txtCorreo.getText() + "', usuario='"+txtUsuario.getText()+"', contraseña='" + txtContraseña.getText() + "', rol_id_rol='"+rol+ "' where idusuarios=" + "'" + txtID.getText() + "'");
+            valor.getConexion().executeUpdate("Update usuario set idUsuario=" + "'" + txtID.getText() + "'"
+                    + ", correo=" + "'" + txtCorreo.getText() + "'" + " , usuario=" + "'" + txtUsuario.getText() + "', contraseña='"+txtContraseña.getText()+"', idRol='" + rol + "', dniPersona='"+txtDni.getText()+ "' where idUsuario=" + "'" + txtID.getText() + "'");
             JOptionPane.showMessageDialog(null, "datos actualizados");
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "error" + e.getMessage());
@@ -398,18 +386,18 @@ public class UsuariosMantenedor extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnActualizarActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        txtNombre.setEditable(true);
-        txtApellido.setEditable(true);
         txtCorreo.setEditable(true);
         txtUsuario.setEditable(true);
         txtContraseña.setEditable(true);
+        txtUsuario.setEditable(true);
+        txtDni.setEditable(true);
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         try {
             int fila = jtListado.getSelectedRow();
             conexionBD valor = new conexionBD();
-            valor.getConexion().executeUpdate("delete from usuarios where idusuarios =" + "'"+jtListado.getValueAt(fila,0)+"'");
+            valor.getConexion().executeUpdate("delete from usuario where idUsuario =" + "'"+jtListado.getValueAt(fila,0)+"'");
             JOptionPane.showMessageDialog(null, "datos eliminados");
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "error" + e.getMessage());
@@ -424,14 +412,13 @@ public class UsuariosMantenedor extends javax.swing.JInternalFrame {
                 int fila = jtListado.getSelectedRow();
                 ResultSet rs = null;
                 conexionBD valor = new conexionBD();
-                rs = valor.getConexion().executeQuery("select * from usuarios where idusuarios=" + jtListado.getValueAt(fila, 0));
+                rs = valor.getConexion().executeQuery("select * from usuario where idUsuario=" + jtListado.getValueAt(fila, 0));
                 rs.next();
-                txtID.setText(rs.getString("idusuarios"));
-                txtNombre.setText(rs.getString("nombre"));
-                txtApellido.setText(rs.getString("apellido"));
+                txtID.setText(rs.getString("idUsuario"));
                 txtCorreo.setText(rs.getString("correo"));
                 txtUsuario.setText(rs.getString("usuario"));
                 txtContraseña.setText(rs.getString("contraseña"));
+                txtDni.setText(rs.getString("dniPersona"));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -442,6 +429,14 @@ public class UsuariosMantenedor extends javax.swing.JInternalFrame {
     private void jtListadoRolMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtListadoRolMouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_jtListadoRolMouseClicked
+
+    private void txtDniKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDniKeyTyped
+        char c = evt.getKeyChar();
+        if (Character.isLetter(c)) {
+            getToolkit().beep();
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtDniKeyTyped
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -454,18 +449,16 @@ public class UsuariosMantenedor extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jtListado;
     private javax.swing.JTable jtListadoRol;
-    private javax.swing.JTextField txtApellido;
     private javax.swing.JTextField txtContraseña;
     private javax.swing.JTextField txtCorreo;
+    private javax.swing.JTextField txtDni;
     private javax.swing.JTextField txtID;
-    private javax.swing.JTextField txtNombre;
     private javax.swing.JTextField txtUsuario;
     // End of variables declaration//GEN-END:variables
 }

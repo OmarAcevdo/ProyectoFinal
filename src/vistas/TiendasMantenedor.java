@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
  */
-package misFormularios;
+package vistas;
 
 import controladores.conexionBD;
 import java.sql.ResultSet;
@@ -18,6 +18,7 @@ public class TiendasMantenedor extends javax.swing.JInternalFrame {
     DefaultTableModel model;
     public TiendasMantenedor() {
         initComponents();
+        Deshabilitar();
         Llenar();
     }
 
@@ -42,14 +43,14 @@ public class TiendasMantenedor extends javax.swing.JInternalFrame {
     
     void Llenar() {
         try {
-            String[] titulos = {"Nombre", "Ruc", "Direccion", "Telefono"};
+            String[] titulos = {"Sucursal", "Ruc", "Direccion", "Telefono"};
             model = new DefaultTableModel(null, titulos);
             ResultSet rs = null;
             conexionBD valor = new conexionBD();
             rs = valor.getConexion().executeQuery("select * from tiendas");
             String fila[] = new String[4];
             while (rs.next()) {
-                fila[0] = rs.getString("nombre");
+                fila[0] = rs.getString("nomTienda");
                 fila[1] = rs.getString("ruc");
                 fila[2] = rs.getString("direccion");
                 fila[3] = rs.getString("telefono");
@@ -85,6 +86,7 @@ public class TiendasMantenedor extends javax.swing.JInternalFrame {
         setClosable(true);
         setIconifiable(true);
         setMaximizable(true);
+        setTitle("Tiendas");
 
         btnNuevo.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         btnNuevo.setText("Nuevo");
@@ -138,13 +140,19 @@ public class TiendasMantenedor extends javax.swing.JInternalFrame {
         jLabel1.setText("RUC:");
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel2.setText("Nombre:");
+        jLabel2.setText("Sucursal:");
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel3.setText("Dirección:");
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel4.setText("Teléfono:");
+
+        txtRuc.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtRucKeyTyped(evt);
+            }
+        });
 
         txtTelefono.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
@@ -281,10 +289,10 @@ public class TiendasMantenedor extends javax.swing.JInternalFrame {
                 int fila = jtListado.getSelectedRow();
                 ResultSet rs = null;
                 conexionBD valor = new conexionBD();
-                rs = valor.getConexion().executeQuery("select * from tiendas where nombre= '" + jtListado.getValueAt(fila,0)+"'");
+                rs = valor.getConexion().executeQuery("select * from tiendas where nomTienda= '" + jtListado.getValueAt(fila,0)+"'");
                 rs.next();
                 txtRuc.setText(rs.getString("ruc"));
-                txtNombre.setText(rs.getString("nombre"));
+                txtNombre.setText(rs.getString("nomTienda"));
                 txtDireccion.setText(rs.getString("direccion"));
                 txtTelefono.setText(rs.getString("telefono"));
             } catch (Exception e) {
@@ -298,7 +306,7 @@ public class TiendasMantenedor extends javax.swing.JInternalFrame {
         try {
             int fila = jtListado.getSelectedRow();
             conexionBD valor = new conexionBD();
-            valor.getConexion().executeUpdate("delete from tiendas where nombre =" + "'"+jtListado.getValueAt(fila,0)+"'");
+            valor.getConexion().executeUpdate("delete from tiendas where nomTienda =" + "'"+jtListado.getValueAt(fila,0)+"'");
             JOptionPane.showMessageDialog(null, "datos eliminados");
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "error" + e.getMessage());
@@ -316,8 +324,8 @@ public class TiendasMantenedor extends javax.swing.JInternalFrame {
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
         try {
             conexionBD valor = new conexionBD();
-            valor.getConexion().executeUpdate("Update tiendas set nombre=" + "'" + txtNombre.getText() + "'"
-                    + ", ruc=" + "'" + txtRuc.getText() + "'" + " , direccion=" + "'" + txtDireccion.getText() + "', telefono='" + txtTelefono.getText() +"' where nombre=" + "'" + txtNombre.getText() + "'");
+            valor.getConexion().executeUpdate("Update tiendas set nomTienda=" + "'" + txtNombre.getText() + "'"
+                    + ", ruc=" + "'" + txtRuc.getText() + "'" + " , direccion=" + "'" + txtDireccion.getText() + "', telefono='" + txtTelefono.getText() +"' where nomTienda=" + "'" + txtNombre.getText() + "'");
             JOptionPane.showMessageDialog(null, "datos actualizados");
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "error" + e.getMessage());
@@ -338,6 +346,14 @@ public class TiendasMantenedor extends javax.swing.JInternalFrame {
             evt.consume();
         }
     }//GEN-LAST:event_txtTelefonoKeyTyped
+
+    private void txtRucKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtRucKeyTyped
+        char c = evt.getKeyChar();
+        if (Character.isLetter(c)) {
+            getToolkit().beep();
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtRucKeyTyped
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -2,11 +2,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package misFormularios;
+package vistas;
 
 import java.awt.Graphics;
 import java.awt.Image;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
@@ -51,8 +52,6 @@ public class Mantenedor extends javax.swing.JFrame {
         opRol = new javax.swing.JMenuItem();
         opTiendas = new javax.swing.JMenuItem();
         opVentas = new javax.swing.JMenu();
-        jMenu3 = new javax.swing.JMenu();
-        jMenu4 = new javax.swing.JMenu();
         jMenu5 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -73,7 +72,7 @@ public class Mantenedor extends javax.swing.JFrame {
 
         jMenu1.setText("Mantenedor");
 
-        opClientes.setText("Clientes");
+        opClientes.setText("Personas");
         opClientes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 opClientesActionPerformed(evt);
@@ -139,13 +138,12 @@ public class Mantenedor extends javax.swing.JFrame {
         });
         jMenuBar1.add(opVentas);
 
-        jMenu3.setText("Compras");
-        jMenuBar1.add(jMenu3);
-
-        jMenu4.setText("Reporte");
-        jMenuBar1.add(jMenu4);
-
         jMenu5.setText("Salir");
+        jMenu5.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenu5MouseClicked(evt);
+            }
+        });
         jMenuBar1.add(jMenu5);
 
         setJMenuBar(jMenuBar1);
@@ -168,7 +166,7 @@ public class Mantenedor extends javax.swing.JFrame {
 
     private void opClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opClientesActionPerformed
 
-        ClientesMantenedor Clientes1=new ClientesMantenedor ();
+        PersonasMantenedor Clientes1=new PersonasMantenedor ();
         escritorio.add(Clientes1);
         Clientes1.show();
 
@@ -224,6 +222,12 @@ public class Mantenedor extends javax.swing.JFrame {
         vent.show();
     }//GEN-LAST:event_opVentasMouseClicked
 
+    private void jMenu5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu5MouseClicked
+        JOptionPane.showMessageDialog(null, "Gracias por comprar en Tambo");
+        System.exit(0);
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenu5MouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -262,8 +266,6 @@ public class Mantenedor extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDesktopPane escritorio;
     private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu3;
-    private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem opCategoria;

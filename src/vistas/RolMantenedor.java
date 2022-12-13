@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
  */
-package misFormularios;
+package vistas;
 
 import controladores.conexionBD;
 import java.sql.ResultSet;
@@ -44,8 +44,8 @@ public class RolMantenedor extends javax.swing.JInternalFrame {
             rs = valor.getConexion().executeQuery("select * from rol");
             String fila[] = new String[2];
             while (rs.next()) {
-                fila[0] = rs.getString("id_rol");
-                fila[1] = rs.getString("nombre");
+                fila[0] = rs.getString("idRol");
+                fila[1] = rs.getString("nomRol");
                 model.addRow(fila);
             }
             jtListado.setModel(model);
@@ -75,6 +75,7 @@ public class RolMantenedor extends javax.swing.JInternalFrame {
         setClosable(true);
         setIconifiable(true);
         setMaximizable(true);
+        setTitle("Rol");
 
         btnNuevo.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         btnNuevo.setText("Nuevo");
@@ -224,7 +225,7 @@ public class RolMantenedor extends javax.swing.JInternalFrame {
         try {
             int fila = jtListado.getSelectedRow();
             conexionBD valor = new conexionBD();
-            valor.getConexion().executeUpdate("delete from rol where id_rol =" + "'"+jtListado.getValueAt(fila,0)+"'");
+            valor.getConexion().executeUpdate("delete from rol where idRol =" + "'"+jtListado.getValueAt(fila,0)+"'");
             JOptionPane.showMessageDialog(null, "datos eliminados");
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "error" + e.getMessage());
@@ -237,7 +238,7 @@ public class RolMantenedor extends javax.swing.JInternalFrame {
         String nomb = txtNombre.getText();
 
         String consulta;
-        consulta = "INSERT INTO rol VALUES( id_rol , '"+ nomb + "' )";
+        consulta = "INSERT INTO rol VALUES( idRol , '"+ nomb + "' )";
         try {
             conexionBD valor = new conexionBD();
             valor.getConexion().executeUpdate(consulta);
@@ -260,8 +261,8 @@ public class RolMantenedor extends javax.swing.JInternalFrame {
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
         try {
             conexionBD valor = new conexionBD();
-            valor.getConexion().executeUpdate("Update rol set id_rol=" + "'" + txtId_Rol.getText() + "'"
-                    +", nombre='" + txtNombre.getText() +"' where id_rol=" + "'" + txtId_Rol.getText() + "'");
+            valor.getConexion().executeUpdate("Update rol set idRol=" + "'" + txtId_Rol.getText() + "'"
+                    +", nomRol='" + txtNombre.getText() +"' where idRol=" + "'" + txtId_Rol.getText() + "'");
             JOptionPane.showMessageDialog(null, "datos actualizados");
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "error" + e.getMessage());
@@ -277,10 +278,10 @@ public class RolMantenedor extends javax.swing.JInternalFrame {
                 int fila = jtListado.getSelectedRow();
                 ResultSet rs = null;
                 conexionBD valor = new conexionBD();
-                rs = valor.getConexion().executeQuery("select * from rol where id_rol=" + jtListado.getValueAt(fila, 0));
+                rs = valor.getConexion().executeQuery("select * from rol where idRol=" + jtListado.getValueAt(fila, 0));
                 rs.next();
-                txtId_Rol.setText(rs.getString("id_rol"));
-                txtNombre.setText(rs.getString("nombre"));               
+                txtId_Rol.setText(rs.getString("idRol"));
+                txtNombre.setText(rs.getString("nomRol"));               
                 
             } catch (Exception e) {
                 e.printStackTrace();

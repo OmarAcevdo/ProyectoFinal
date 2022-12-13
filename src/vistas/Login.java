@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package misFormularios;
+package vistas;
 
 import controladores.conexionBD;
 import java.awt.Graphics;
@@ -43,7 +43,7 @@ public class Login extends javax.swing.JFrame {
         txtUsuario = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        txtContraseña = new javax.swing.JTextField();
+        txtContraseña = new javax.swing.JPasswordField();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -55,6 +55,7 @@ public class Login extends javax.swing.JFrame {
         btnEntrar.setFont(new java.awt.Font("Comic Sans MS", 1, 26)); // NOI18N
         btnEntrar.setForeground(new java.awt.Color(255, 255, 255));
         btnEntrar.setText("ENTRAR");
+        btnEntrar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnEntrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEntrarActionPerformed(evt);
@@ -66,6 +67,7 @@ public class Login extends javax.swing.JFrame {
         btnSalir.setFont(new java.awt.Font("Comic Sans MS", 1, 24)); // NOI18N
         btnSalir.setForeground(new java.awt.Color(255, 255, 255));
         btnSalir.setText("SALIR");
+        btnSalir.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnSalir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSalirActionPerformed(evt);
@@ -125,7 +127,7 @@ public class Login extends javax.swing.JFrame {
             try {
                 ResultSet rs = null;
                 conexionBD valor = new conexionBD();
-                rs = valor.getConexion().executeQuery("select * from users where nomUsuario='" + usu + "' and passUsuario=" + pass);
+                rs = valor.getConexion().executeQuery("select * from usuario where usuario = '" + usu + "' and contraseña = '" + pass+"'");
                 int numero = 0;
                 while (rs.next()) {
                     numero++;
@@ -137,12 +139,13 @@ public class Login extends javax.swing.JFrame {
                     this.hide();
                 }
             }catch (SQLException e) {
+                System.out.println(e);
                 JOptionPane.showMessageDialog(this, "Datos incorrectos");
                 txtUsuario.setText("");
                 txtContraseña.setText("");
                 txtUsuario.requestFocus();
             }}
-
+            
             /*Mantenedor mantenedor1=new Mantenedor ();
             mantenedor1.setVisible(true);
             this.dispose();
@@ -191,7 +194,7 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JTextField txtContraseña;
+    private javax.swing.JPasswordField txtContraseña;
     private javax.swing.JTextField txtUsuario;
     // End of variables declaration//GEN-END:variables
 

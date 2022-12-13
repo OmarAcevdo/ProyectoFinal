@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
  */
-package misFormularios;
+package vistas;
 
 import controladores.conexionBD;
 import java.sql.ResultSet;
@@ -13,15 +13,16 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author USER
  */
-public class ClientesMantenedor extends javax.swing.JInternalFrame {
+public class PersonasMantenedor extends javax.swing.JInternalFrame {
 
     DefaultTableModel model;
 
-    public ClientesMantenedor() {
+    public PersonasMantenedor() {
         initComponents();
         Llenar();
     }
-    void Deshabilitar(){
+
+    void Deshabilitar() {
         txtNombres.setEditable(false);
         txtApellidos.setEditable(false);
         txtDNI.setEditable(false);
@@ -30,7 +31,7 @@ public class ClientesMantenedor extends javax.swing.JInternalFrame {
         rbHombre.setEnabled(false);
         rbMujer.setEnabled(false);
     }
-    
+
     void Limpiar() {
         txtNombres.setEditable(true);
         txtApellidos.setEditable(true);
@@ -53,12 +54,12 @@ public class ClientesMantenedor extends javax.swing.JInternalFrame {
             model = new DefaultTableModel(null, titulos);
             ResultSet rs = null;
             conexionBD valor = new conexionBD();
-            rs = valor.getConexion().executeQuery("select * from users");
+            rs = valor.getConexion().executeQuery("select * from persona");
             String fila[] = new String[6];
             while (rs.next()) {
                 fila[0] = rs.getString("dni");
-                fila[1] = rs.getString("nombres");
-                fila[2] = rs.getString("apellidos");
+                fila[1] = rs.getString("nomPersona");
+                fila[2] = rs.getString("ApellPersona");
                 fila[3] = rs.getString("telefono");
                 fila[4] = rs.getString("sexo");
                 fila[5] = rs.getString("edad");
@@ -105,7 +106,7 @@ public class ClientesMantenedor extends javax.swing.JInternalFrame {
         setClosable(true);
         setIconifiable(true);
         setMaximizable(true);
-        setTitle("Clientes");
+        setTitle("Personas");
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel1.setText("DNI:");
@@ -355,8 +356,8 @@ public class ClientesMantenedor extends javax.swing.JInternalFrame {
             sexo = "Femenino";
         }
         String consulta;
-        consulta = "INSERT INTO users VALUES('"
-                + nom + "','" + apell + "','" + dni + "','" + tel + "','" + sexo + "'," + edad + ",'prueba','prueba'"+")";
+        consulta = "INSERT INTO persona VALUES('"
+                + dni + "','" + nom + "','" + apell + "','" + tel + "','" + sexo + "'," + edad + ")";
         try {
             conexionBD valor = new conexionBD();
             valor.getConexion().executeUpdate(consulta);
@@ -370,16 +371,26 @@ public class ClientesMantenedor extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void txtDNIKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDNIKeyTyped
-        char c = evt.getKeyChar();
-        if (Character.isLetter(c)) {
+        char key = evt.getKeyChar();
+        boolean numeros = key >= 48 && key <= 57 || key == 8;
+        if (!numeros) {
+            getToolkit().beep();
+            evt.consume();
+        }
+        if (txtDNI.getText().trim().length() == 8) {
             getToolkit().beep();
             evt.consume();
         }
     }//GEN-LAST:event_txtDNIKeyTyped
 
     private void txtEdadKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtEdadKeyTyped
-        char c = evt.getKeyChar();
-        if (Character.isLetter(c)) {
+        char key = evt.getKeyChar();
+        boolean numeros = key >= 48 && key <= 57 || key == 8;
+        if (!numeros) {
+            getToolkit().beep();
+            evt.consume();
+        }
+        if (txtEdad.getText().trim().length() == 3) {
             getToolkit().beep();
             evt.consume();
         }
@@ -391,11 +402,11 @@ public class ClientesMantenedor extends javax.swing.JInternalFrame {
                 int fila = jtListado.getSelectedRow();
                 ResultSet rs = null;
                 conexionBD valor = new conexionBD();
-                rs = valor.getConexion().executeQuery("select * from users where dni=" + jtListado.getValueAt(fila, 0));
+                rs = valor.getConexion().executeQuery("select * from persona where dni=" + jtListado.getValueAt(fila, 0));
                 rs.next();
-                txtNombres.setText(rs.getString("nombres"));
-                txtApellidos.setText(rs.getString("apellidos"));
                 txtDNI.setText(rs.getString("dni"));
+                txtNombres.setText(rs.getString("nomPersona"));
+                txtApellidos.setText(rs.getString("apellPersona"));
                 txtTelefono.setText(rs.getString("telefono"));
                 String sexo = rs.getString("sexo");
                 if (sexo.equals("Masculino")) {
@@ -421,8 +432,8 @@ public class ClientesMantenedor extends javax.swing.JInternalFrame {
             } else if (rbMujer.isSelected()) {
                 sexo = "Femenino";
             }
-            valor.getConexion().executeUpdate("Update users set nombres=" + "'" + txtNombres.getText() + "'"
-                    + ", apellidos=" + "'" + txtApellidos.getText() + "'" + " , dni=" + "'" + txtDNI.getText() + "', telefono='" + txtTelefono.getText() + "', sexo='" + sexo + "', edad='"+txtEdad.getText()+"' where dni=" + "'" + txtDNI.getText() + "'");
+            valor.getConexion().executeUpdate("Update persona set dni=" + "'" + txtDNI.getText() + "'"
+                    + ", nomPersona=" + "'" + txtNombres.getText() + "'" + " , apellPersona=" + "'" + txtApellidos.getText() + "', telefono='" + txtTelefono.getText() + "', sexo='" + sexo + "', edad='" + txtEdad.getText() + "' where dni=" + "'" + txtDNI.getText() + "'");
             JOptionPane.showMessageDialog(null, "datos actualizados");
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "error" + e.getMessage());
@@ -435,7 +446,7 @@ public class ClientesMantenedor extends javax.swing.JInternalFrame {
         try {
             int fila = jtListado.getSelectedRow();
             conexionBD valor = new conexionBD();
-            valor.getConexion().executeUpdate("delete from users where dni =" + "'"+jtListado.getValueAt(fila,0)+"'");
+            valor.getConexion().executeUpdate("delete from persona where dni =" + "'" + jtListado.getValueAt(fila, 0) + "'");
             JOptionPane.showMessageDialog(null, "datos eliminados");
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "error" + e.getMessage());
@@ -464,8 +475,13 @@ public class ClientesMantenedor extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void txtTelefonoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTelefonoKeyTyped
-        char c = evt.getKeyChar();
-        if (Character.isLetter(c)) {
+        char key = evt.getKeyChar();
+        boolean numeros = key >= 48 && key <= 57 || key == 8;
+        if (!numeros) {
+            getToolkit().beep();
+            evt.consume();
+        }
+        if (txtTelefono.getText().trim().length() == 9) {
             getToolkit().beep();
             evt.consume();
         }
